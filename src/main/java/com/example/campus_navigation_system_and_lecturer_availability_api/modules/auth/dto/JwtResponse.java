@@ -1,7 +1,6 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
-    @Email
-    @NotBlank
+public class JwtResponse {
+    private String token;
     private String email;
-
-    @NotBlank
-    private String password;
+    private Role role;
 }
