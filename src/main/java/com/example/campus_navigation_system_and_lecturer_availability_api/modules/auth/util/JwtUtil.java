@@ -1,5 +1,6 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.util;
 
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.JwtTokenData;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,17 +19,21 @@ public class JwtUtil {
     // convert your secret string to a secure key object
     Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
-    public String generateToken(User user) {
+    public JwtTokenData generateToken(User user) {
         Date now = new Date();
         long jwtExpiration = 86400000;
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(user.getEmail()) // sets the subject of the token
                 .claim("role", user.getRole().name()) // custom claim
                 .setIssuedAt(now) // time the token was issued
                 .setExpiration(expiryDate) // expiration date
                 .signWith(key, SignatureAlgorithm.HS512) // signing method and secret
                 .compact(); // build the token
+        return new JwtTokenData(
+                token,
+                expiryDate
+        );
     }
 }

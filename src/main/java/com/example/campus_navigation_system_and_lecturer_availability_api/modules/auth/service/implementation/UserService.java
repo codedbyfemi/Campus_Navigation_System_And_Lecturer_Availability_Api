@@ -1,9 +1,6 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.service.implementation;
 
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.JwtResponse;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.LoginRequest;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.RegisterRequest;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.UserResponse;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.User;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.exceptions.InvalidEmailDomainException;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.model.Role;
@@ -70,8 +67,9 @@ public class UserService implements IUserService {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser(); // Custom method to access original User
 
-        String token = jwtUtil.generateToken(user);
-        return new JwtResponse(token, user.getEmail(), user.getRole());
+        JwtTokenData tokenData = jwtUtil.generateToken(user);
+
+        return new JwtResponse(tokenData.getToken(), tokenData.getExpiration(), user.getEmail(), user.getRole());
     }
 
     private Role extractRoleFromEmail(String email) {
