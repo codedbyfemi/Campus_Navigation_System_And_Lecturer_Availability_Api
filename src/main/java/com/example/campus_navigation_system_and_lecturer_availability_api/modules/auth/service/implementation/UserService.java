@@ -9,6 +9,11 @@ import com.example.campus_navigation_system_and_lecturer_availability_api.module
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.model.Role;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.repository.UserRepository;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.service.interfaces.IUserService;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.util.CustomUserDetails;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.util.JwtUtil;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +22,14 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncode) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncode, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncode;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
@@ -54,7 +63,15 @@ public class UserService implements IUserService {
 
     @Override
     public JwtResponse login(LoginRequest request) {
-        return null;
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser(); // Custom method to access original User
+
+        String token = jwtUtil.generateToken(user);
+        return new JwtResponse(token, user.getEmail(), user.getRole());
     }
 
     private Role extractRoleFromEmail(String email) {
