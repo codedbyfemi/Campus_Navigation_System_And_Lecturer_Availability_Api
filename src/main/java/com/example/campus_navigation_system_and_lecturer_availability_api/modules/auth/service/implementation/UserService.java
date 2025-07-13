@@ -3,7 +3,7 @@ package com.example.campus_navigation_system_and_lecturer_availability_api.modul
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.User;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.exceptions.InvalidEmailDomainException;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.model.Role;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.enums.Role;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.repository.UserRepository;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.service.interfaces.IUserService;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.util.CustomUserDetails;

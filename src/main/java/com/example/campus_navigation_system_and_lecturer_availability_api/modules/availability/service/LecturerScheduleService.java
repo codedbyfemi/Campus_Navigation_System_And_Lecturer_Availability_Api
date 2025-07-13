@@ -1,0 +1,15 @@
+package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service;
+
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.CreateScheduleRequest;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.LecturerAvailabilityStatus;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.LecturerScheduleResponse;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.LecturerScheduleResponse2;
+
+public interface LecturerScheduleService {
+
+    LecturerScheduleResponse createSchedule(CreateScheduleRequest request);
+
+    LecturerScheduleResponse2 getScheduleByLecturerAndDay(Long lecturerId, String upperCase);
+
+    LecturerAvailabilityStatus isLecturerAvailableNow(Long lecturerId);
+}
