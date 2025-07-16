@@ -67,6 +67,12 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
         return response;
     }
 
+    /**
+     * TODO: Implement schedule override
+     * @param lecturerId
+     * @param day
+     * @return
+     */
     @Override
     public LecturerScheduleResponse2 getScheduleByLecturerAndDay(Long lecturerId, String day) {
         DayOfWeek dayOfWeek = DayOfWeek.valueOf(day); // MONDAY, TUESDAY, etc.
