@@ -1,9 +1,6 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.controllers;
 
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.CreateScheduleRequest;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.LecturerAvailabilityStatus;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.LecturerScheduleResponse;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.LecturerScheduleResponse2;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service.LecturerScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,8 @@ public class LecturerScheduleController {
 
     /**
      * Endpoint for creating a schedule with one or more availability slots
+     * @param request is the request body
+     * @return is the return value
      */
     @PostMapping
     @PreAuthorize("hasRole('LECTURER')")
@@ -30,6 +29,12 @@ public class LecturerScheduleController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint for retrieving schedule by day
+     * @param lecturerId as the query parameter
+     * @param day as the query parameter
+     * @return return value
+     */
     @GetMapping("/{lecturerId}/{day}")
     @PreAuthorize("hasRole('STUDENT') or hasRole('PG_STUDENT') or hasRole('LECTURER')")
     public ResponseEntity<LecturerScheduleResponse2> getScheduleByDay(
@@ -40,6 +45,11 @@ public class LecturerScheduleController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Endpoint for retrieving current availability status
+     * @param lecturerId as the query parameter
+     * @return return value
+     */
     @GetMapping("/check/{lecturerId}")
     @PreAuthorize("hasRole('STUDENT') or hasRole('PG_STUDENT') or hasRole('LECTURER')")
     public ResponseEntity<LecturerAvailabilityStatus> isLecturerAvailableNow(@PathVariable Long lecturerId) {
