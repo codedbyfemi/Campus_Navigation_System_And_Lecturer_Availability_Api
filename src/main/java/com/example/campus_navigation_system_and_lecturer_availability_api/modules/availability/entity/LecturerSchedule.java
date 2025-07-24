@@ -1,5 +1,6 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.entity;
 
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.enums.LecturerEntity;
 import jakarta.persistence.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.enums.AvailabilityStatus;
 import lombok.Data;
@@ -22,10 +23,6 @@ public class LecturerSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * The ID of the lecturer (references the User entity).
-     */
-    private Long lecturerId;
 
     /**
      * The day of the week this schedule is for (e.g. MONDAY).
@@ -49,5 +46,11 @@ public class LecturerSchedule {
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AvailabilitySlot> slots;
 
-    // Constructors, getters, setters (manually or via Lombok)
+    /**
+     * The ID of the lecturer (references the User entity).
+     */
+    @ManyToOne
+    @JoinColumn(name = "lecturer_id")
+    private LecturerEntity lecturer;
+
 }
