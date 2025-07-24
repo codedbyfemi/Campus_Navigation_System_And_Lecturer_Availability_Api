@@ -1,9 +1,11 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.service.implementation;
 
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.*;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.LecturerEntity;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.User;
 import com.example.campus_navigation_system_and_lecturer_availability_api.common.exception.InvalidEmailDomainException;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.enums.Role;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.repository.LecturerRepo;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.repository.UserRepository;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.service.interfaces.IUserService;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.util.CustomUserDetails;
@@ -18,12 +20,14 @@ import org.springframework.stereotype.Service;
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
+    private final LecturerRepo lecturerRepo;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncode, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, LecturerRepo lecturerRepo, PasswordEncoder passwordEncode, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.lecturerRepo = lecturerRepo;
         this.passwordEncoder = passwordEncode;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -71,6 +75,36 @@ public class UserService implements IUserService {
 
         return new JwtResponse(tokenData.getToken(), tokenData.getExpiration(), user.getEmail(), user.getRole());
     }
+
+    @Override
+    public LecturerDetailsDTO setDetails(LecturerDetailsDTO dto, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+
+
+        // Create new LecturerEntity from DTO
+        LecturerEntity lecturer = new LecturerEntity();
+        lecturer.setName(dto.name);
+        lecturer.setDepartment(dto.department);
+        lecturer.setEmail(user.getEmail());
+        lecturer.setOfficeBuilding(dto.officeBuilding);
+        lecturer.setOfficeNumber(dto.officeNumber);
+
+        // Save lecturer and cascade to save schedules
+        LecturerEntity saved = lecturerRepo.save(lecturer);
+
+        // Map back to DTO (conversion from Entity to DTO)
+        LecturerDetailsDTO result = new LecturerDetailsDTO();
+        result.name = saved.getName();
+        result.department = saved.getDepartment();
+        result.email = saved.getEmail();
+        result.officeBuilding = saved.getOfficeBuilding();
+        result.officeNumber = saved.getOfficeNumber();
+
+        return result;
+
+    }
+
 
     private Role extractRoleFromEmail(String email) {
         if (email.endsWith("@student.babcock.edu.ng")) return Role.STUDENT;

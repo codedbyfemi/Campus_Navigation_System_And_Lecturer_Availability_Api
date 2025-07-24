@@ -1,6 +1,6 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.entity;
 
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.enums.LecturerEntity;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.LecturerEntity;
 import jakarta.persistence.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.enums.AvailabilityStatus;
 import lombok.Data;

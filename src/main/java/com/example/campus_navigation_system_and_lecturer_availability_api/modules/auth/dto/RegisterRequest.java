@@ -10,19 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterRequest {
-
-    @NotBlank
-    public String name;
-
-    @NotBlank
-    public String department;
-
-    @NotBlank
-    public String officeBuilding;
-
-    @NotBlank
-    public String officeNumber;
-
     @Email
     @NotBlank
     private String email;

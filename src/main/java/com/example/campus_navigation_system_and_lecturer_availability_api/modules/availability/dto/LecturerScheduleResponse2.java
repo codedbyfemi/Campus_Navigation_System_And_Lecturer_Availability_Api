@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LecturerScheduleResponse2 {
-    private Long lecturerId;
+    private Long lecturername;
     private DayOfWeek dayOfWeek;
     private List<SlotResponse> slots;
 }

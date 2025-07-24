@@ -25,7 +25,7 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
     public LecturerScheduleResponse createSchedule(CreateScheduleRequest request) {
         // Build the schedule
         LecturerSchedule schedule = new LecturerSchedule();
-        schedule.setLecturerId(request.getLecturerId());
+        schedule.setId(request.getLecturerId());
         schedule.setDayOfWeek(request.getDayOfWeek());
         schedule.setStatusOverride(AvailabilityStatus.DEFAULT); // by default, follow slot logic
         schedule.setLastModified(LocalDateTime.now());
@@ -49,7 +49,7 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
         // Build response
         LecturerScheduleResponse response = new LecturerScheduleResponse();
         response.setId(saved.getId());
-        response.setLecturerId(saved.getLecturerId());
+        response.setLecturerId(saved.getLecturer().getId());
         response.setDayOfWeek(saved.getDayOfWeek());
         response.setStatusOverride(saved.getStatusOverride());
         response.setLastModified(saved.getLastModified());
@@ -92,7 +92,7 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
                 .collect(Collectors.toList());
 
 
-        return new LecturerScheduleResponse2(schedule.getLecturerId(), dayOfWeek, slotResponses);
+        return new LecturerScheduleResponse2(schedule.getLecturer().getId(), dayOfWeek, slotResponses);
     }
 
     @Override
