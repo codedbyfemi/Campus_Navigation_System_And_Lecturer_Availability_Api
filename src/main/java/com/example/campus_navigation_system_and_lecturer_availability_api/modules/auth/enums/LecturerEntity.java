@@ -4,7 +4,6 @@ import com.example.campus_navigation_system_and_lecturer_availability_api.module
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
