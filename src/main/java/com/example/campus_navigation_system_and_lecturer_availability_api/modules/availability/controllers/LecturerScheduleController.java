@@ -1,7 +1,7 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.controllers;
 
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.*;
-import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service.LecturerScheduleService;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service.interfaces.LecturerScheduleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

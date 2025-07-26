@@ -1,4 +1,4 @@
-package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service;
+package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service.implementation;
 
 import com.example.campus_navigation_system_and_lecturer_availability_api.common.exception.ResourceNotFoundException;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.LecturerEntity;
@@ -7,6 +7,7 @@ import com.example.campus_navigation_system_and_lecturer_availability_api.module
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.entity.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.enums.AvailabilityStatus;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.repository.*;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service.interfaces.LecturerScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
