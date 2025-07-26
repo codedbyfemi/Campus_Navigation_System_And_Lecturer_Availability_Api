@@ -3,6 +3,7 @@ package com.example.campus_navigation_system_and_lecturer_availability_api.modul
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.dto.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.LecturerEntity;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.User;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.enums.Role;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.repository.LecturerRepo;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.service.implementation.UserService;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.util.CustomUserDetails;
@@ -46,16 +47,19 @@ public class AuthController {
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser();
-        LecturerEntity lect = lecturerRepo.findByEmail(user.getEmail()).orElse(null);
+        if (user.getRole() == Role.LECTURER) {
+            LecturerEntity lect = lecturerRepo.findByEmail(user.getEmail()).orElse(null);
+            return ResponseEntity.ok(new JwtResponse(
+                    null,
+                    null,
+                    lect.getName(),
+                    lect.getEmail(),
+                    user.getRole()
+            ));
 
+        }
 
-        return ResponseEntity.ok(new JwtResponse(
-                null,
-                null,
-                lect.getName(),
-                user.getEmail(),
-                user.getRole()
-        ));
+        return ResponseEntity.ok(new JwtResponse(null, null, null, user.getEmail(), user.getRole()));
     }
 
 }

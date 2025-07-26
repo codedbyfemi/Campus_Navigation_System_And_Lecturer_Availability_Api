@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/details").authenticated()
-                        .requestMatchers("/api/availability/schedule/**").authenticated()
+                        .requestMatchers("/api/v1/availability/schedule/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // ⬅️ Register the filter
 

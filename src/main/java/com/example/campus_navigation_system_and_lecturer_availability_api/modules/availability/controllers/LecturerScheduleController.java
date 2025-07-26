@@ -9,7 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/availability/schedule")
+@RequestMapping("/api/v1/availability/schedule")
 public class LecturerScheduleController {
 
     @Autowired
