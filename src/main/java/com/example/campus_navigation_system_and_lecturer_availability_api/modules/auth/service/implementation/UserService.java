@@ -70,10 +70,12 @@ public class UserService implements IUserService {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         User user = userDetails.getUser(); // Custom method to access original User
+        LecturerEntity lect = lecturerRepo.findByEmail(user.getEmail()).orElse(null);
+
 
         JwtTokenData tokenData = jwtUtil.generateToken(user);
 
-        return new JwtResponse(tokenData.getToken(), tokenData.getExpiration(), user.getEmail(), user.getRole());
+        return new JwtResponse(tokenData.getToken(), tokenData.getExpiration(), user.getEmail(), lect.getName(), user.getRole());
     }
 
     @Override

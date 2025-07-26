@@ -38,7 +38,7 @@ public class LecturerScheduleController {
     @GetMapping("/{lecturerId}/{day}")
     @PreAuthorize("hasRole('STUDENT') or hasRole('PG_STUDENT') or hasRole('LECTURER')")
     public ResponseEntity<LecturerScheduleResponse2> getScheduleByDay(
-            @PathVariable Long lecturerId,
+            @PathVariable String lecturerId,
             @PathVariable String day
     ) {
         LecturerScheduleResponse2 response = scheduleService.getScheduleByLecturerAndDay(lecturerId, day.toUpperCase());
@@ -52,7 +52,7 @@ public class LecturerScheduleController {
      */
     @GetMapping("/check/{lecturerId}")
     @PreAuthorize("hasRole('STUDENT') or hasRole('PG_STUDENT') or hasRole('LECTURER')")
-    public ResponseEntity<LecturerAvailabilityStatus> isLecturerAvailableNow(@PathVariable Long lecturerId) {
+    public ResponseEntity<LecturerAvailabilityStatus> isLecturerAvailableNow(@PathVariable String lecturerId) {
         LecturerAvailabilityStatus response = scheduleService.isLecturerAvailableNow(lecturerId);
         return ResponseEntity.ok(response);
     }

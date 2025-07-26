@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class CreateScheduleRequest {
 
-    private Long lecturerId;
+    private String lecturerName;
     private DayOfWeek dayOfWeek;
     private List<AvailabilitySlotDTO> slots;
 

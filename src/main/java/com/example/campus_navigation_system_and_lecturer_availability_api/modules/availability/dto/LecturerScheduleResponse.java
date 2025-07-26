@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LecturerScheduleResponse {
 
-    private Long id;
+    private String name;
     private Long lecturerId;
     private DayOfWeek dayOfWeek;
     private AvailabilityStatus statusOverride;

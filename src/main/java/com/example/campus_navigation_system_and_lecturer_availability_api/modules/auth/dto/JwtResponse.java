@@ -11,13 +11,15 @@ public class JwtResponse {
     private final String token;
     private final Date expiration;
     private final String readableExpiry;
+    private final String name;
     private final String email;
     private final Role role;
 
-    public JwtResponse(String token, Date expiration, String email, Role role) {
+    public JwtResponse(String token, Date expiration, String name, String email, Role role) {
         this.token = token;
         this.expiration = expiration;
         this.readableExpiry = DateUtil.formatDate(expiration); // Format after assignment
+        this.name = name;
         this.email = email;
         this.role = role;
     }

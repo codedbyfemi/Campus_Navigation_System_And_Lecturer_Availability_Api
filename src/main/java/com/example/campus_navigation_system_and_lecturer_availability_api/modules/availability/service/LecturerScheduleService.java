@@ -6,7 +6,7 @@ public interface LecturerScheduleService {
 
     LecturerScheduleResponse createSchedule(CreateScheduleRequest request);
 
-    LecturerScheduleResponse2 getScheduleByLecturerAndDay(Long lecturerId, String upperCase);
+    LecturerScheduleResponse2 getScheduleByLecturerAndDay(String lecturerName, String upperCase);
 
-    LecturerAvailabilityStatus isLecturerAvailableNow(Long lecturerId);
+    LecturerAvailabilityStatus isLecturerAvailableNow(String lecturerId);
 }

@@ -1,6 +1,8 @@
 package com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.service;
 
 import com.example.campus_navigation_system_and_lecturer_availability_api.common.exception.ResourceNotFoundException;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.entity.LecturerEntity;
+import com.example.campus_navigation_system_and_lecturer_availability_api.modules.auth.repository.LecturerRepo;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.dto.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.entity.*;
 import com.example.campus_navigation_system_and_lecturer_availability_api.modules.availability.enums.AvailabilityStatus;
@@ -20,12 +22,15 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
 
     @Autowired
     private LecturerScheduleRepository scheduleRepository;
+    @Autowired
+    private LecturerRepo lecturerRepo;
 
     @Override
     public LecturerScheduleResponse createSchedule(CreateScheduleRequest request) {
+        LecturerEntity lecturerEntity = lecturerRepo.findByName(request.getLecturerName());
         // Build the schedule
         LecturerSchedule schedule = new LecturerSchedule();
-        schedule.setId(request.getLecturerId());
+        schedule.setLecturer(lecturerEntity);
         schedule.setDayOfWeek(request.getDayOfWeek());
         schedule.setStatusOverride(AvailabilityStatus.DEFAULT); // by default, follow slot logic
         schedule.setLastModified(LocalDateTime.now());
@@ -48,7 +53,7 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
 
         // Build response
         LecturerScheduleResponse response = new LecturerScheduleResponse();
-        response.setId(saved.getId());
+        response.setName(lecturerEntity.getName());
         response.setLecturerId(saved.getLecturer().getId());
         response.setDayOfWeek(saved.getDayOfWeek());
         response.setStatusOverride(saved.getStatusOverride());
@@ -69,16 +74,18 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
 
     /**
      * TODO: Implement schedule override
-     * @param lecturerId
+     * @param lecturerName
      * @param day
      * @return
      */
     @Override
-    public LecturerScheduleResponse2 getScheduleByLecturerAndDay(Long lecturerId, String day) {
+    public LecturerScheduleResponse2 getScheduleByLecturerAndDay(String lecturerName, String day) {
         DayOfWeek dayOfWeek = DayOfWeek.valueOf(day); // MONDAY, TUESDAY, etc.
+        LecturerEntity lecturerEntity = lecturerRepo.findByName(lecturerName);
+
 
         LecturerSchedule schedule = scheduleRepository
-                .findByLecturerIdAndDayOfWeek(lecturerId, dayOfWeek)
+                .findByLecturerIdAndDayOfWeek(lecturerEntity.getId(), dayOfWeek)
                 .orElseThrow(() -> new ResourceNotFoundException("Schedule not found"));
 
         // Map to DTO
@@ -92,19 +99,20 @@ public class LecturerScheduleServiceImpl implements LecturerScheduleService {
                 .collect(Collectors.toList());
 
 
-        return new LecturerScheduleResponse2(schedule.getLecturer().getId(), dayOfWeek, slotResponses);
+        return new LecturerScheduleResponse2(schedule.getLecturer().getName(), dayOfWeek, slotResponses);
     }
 
     @Override
-    public LecturerAvailabilityStatus isLecturerAvailableNow(Long lecturerId) {
+    public LecturerAvailabilityStatus isLecturerAvailableNow(String lecturerName) {
         DayOfWeek today = LocalDate.now().getDayOfWeek();
         LocalTime now = LocalTime.now();
         LocalTime availableUntil;
         LocalTime nextAvailableAt = null;
         boolean available =  false;
+        LecturerEntity lecturerEntity = lecturerRepo.findByName(lecturerName);
 
         LecturerSchedule schedule = scheduleRepository
-                .findByLecturerIdAndDayOfWeek(lecturerId, today)
+                .findByLecturerIdAndDayOfWeek(lecturerEntity.getId(), today)
                 .orElse(null);
 
         if (schedule == null || schedule.getSlots().isEmpty()) {
