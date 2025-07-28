@@ -13,7 +13,7 @@ public class LocationServiceImpl implements ILocationService {
     private LocationRepository locationRepository;
     @Override
     public LocationDTO getLocationByLocationName(String locationName) {
-        LocationEntity location = locationRepository.getByLocationName(locationName);
+        LocationEntity location = locationRepository.finadByLocationName(locationName);
 
         return toDTO(location);
     }
