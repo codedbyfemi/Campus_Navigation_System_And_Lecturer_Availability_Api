@@ -10,8 +10,11 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SlotResponse {
+
     private LocalTime startTime;
+
     private LocalTime endTime;
+
     private String location;
 
     // Constructor, Getters, Setters

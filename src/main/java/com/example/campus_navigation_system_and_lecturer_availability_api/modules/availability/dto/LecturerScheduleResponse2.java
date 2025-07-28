@@ -11,7 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LecturerScheduleResponse2 {
+
     private String lecturername;
+
     private DayOfWeek dayOfWeek;
+
     private List<SlotResponse> slots;
 }
+

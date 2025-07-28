@@ -11,11 +11,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LecturerDetailsDTO {
+
     public String name;
+
     public String department;
+
     public String officeBuilding;
+
     public String officeNumber;
+
     public String email;
+
     public List<LecturerSchedule> schedules;
 
 }
